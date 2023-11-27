@@ -7,7 +7,7 @@ export default function projectDetail({ params }) {
             <div className="p-5">
                 <Link className="bg-black p-2 rounded text-white inline-block" href="/channel">Go Channel</Link>
                 <h1>Hello project : {channelCode} :: {projectId}</h1>
-                <Chat />
+                <Chat channelCode={channelCode} projectId={projectId} />
             </div>
         </>
     )
