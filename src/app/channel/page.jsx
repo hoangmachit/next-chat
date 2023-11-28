@@ -1,20 +1,15 @@
-import Link from "next/link"
+import { cookies } from "next/headers"
+import ChatMessage from "../../components/chat/chat-message";
 export default function Channel() {
+    const cookieList = cookies();
     return (
-        <>
-            <div className="flex justify-center align-center flex-wrap pt-3">
-                <ul>
-                    <li className="mb-3">
-                        <Link className="text-white bg-black p-3 rounded inline-block" href="/channel/QWEDFDFD">Channel 01</Link>
-                    </li>
-                    <li className="mb-3">
-                        <Link className="text-white bg-black p-3 rounded inline-block" href="/channel/VMJFYDKG">Channel 02</Link>
-                    </li>
-                    <li>
-                        <Link className="text-white bg-black p-3 rounded inline-block" href="/channel/KGIHDNDK">Channel 03</Link>
-                    </li>
-                </ul>
+        <div className="flex justify-center">
+            <div className="w-25 ms-3">
+                Hello user: {cookieList.get('username')?.value}
             </div>
-        </>
+            <div className="w-70 me-1">
+                <ChatMessage />
+            </div>
+        </div>
     )
 }
