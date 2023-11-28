@@ -21,7 +21,6 @@ export default async (req, res) => {
         console.log(`_____User disconnected:${socket.id}`);
       });
     });
-
     res.socket.server.io = io;
   }
 

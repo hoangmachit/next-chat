@@ -21,16 +21,17 @@ export const SocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socketClient = SocketIOClient.connect('http://localhost:3000', {
-      path: "/api/socket/io",
+    const API_URL = process.env.NEXT_PUBLIC_API;
+    console.log(">>>API", API_URL);
+    const socketClient = SocketIOClient.connect(API_URL, {
+        path: "/api/socket/io",
     });
-
     setSocket(socketClient);
-
+    setIsConnected(true);
     return () => {
-      socketClient.disconnect();
+        socketClient.disconnect();
     };
-  }, []);
+}, []);
 
   return (
     <SocketContext.Provider value={{ socket, isConnected }}>
