@@ -1,31 +1,14 @@
 'use client'
-import { useEffect, useState } from 'react';
-import { useSocket } from "../../provider/SocketProvider";
-export default function UserOnline() {
-    const { socket, connected } = useSocket();
-    const [onlineUsers, setOnlineUsers] = useState([]);
-    useEffect(() => {
-        if (socket && connected) {
-            socket.on('userConnected', (username) => {
-                setOnlineUsers((prevUsers) => [...prevUsers, username]);
-            });
-
-            socket.on('userDisconnected', (username) => {
-                setOnlineUsers((prevUsers) => prevUsers.filter((user) => user !== username));
-            });
-
-            return () => {
-                socket.off('userConnected');
-                socket.off('userDisconnected');
-            };
-        }
-    }, [socket, connected]);
-
+export default function UserOnline({ allUser, user }) {
     return (
         <div className="w-70">
-            <h2>Online Users:</h2>
+            <h2>All Users:</h2>
             <ul>
-                { JSON.stringify(onlineUsers) }
+                {allUser?.map(item => {
+                    return <li key={item.id} className="flex items-center">
+                        <span className="inline-block rounded w-1 h-1 bg-black me-1"></span>{item.id === user.id ? 'You' : item.name}
+                    </li>
+                })}
             </ul>
         </div>
     );

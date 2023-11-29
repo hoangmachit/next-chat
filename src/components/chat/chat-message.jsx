@@ -2,19 +2,19 @@
 
 import { useEffect, useState } from "react"
 import { useSocket } from "../../provider/SocketProvider";
-export default function ChatMessage() {
+import CircleLoader from "react-spinners/CircleLoader";
+export default function ChatMessage({ allUser, user, allMessage }) {
     const [messages, setMessages] = useState([]);
     const [msg, setMsg] = useState("");
-    const { socket, connected } = useSocket();
+    const { socket } = useSocket();
     useEffect(() => {
-        const getMessage = async () => {
-            setMessages([...messages, { user: "Hoang Mach Van", msg: "Hello User" }]);
-        }
+        setMessages(allMessage);
+    }, []);
+    useEffect(() => {
         if (socket) {
-            getMessage();
-            socket.on('msgChannel', (msg) => {
-                setMessages(prevMessages => [...prevMessages, { user: "End user", msg: msg }]);
-            })
+            socket.on('msgChannel', (message) => {
+                setMessages(prevMessages => [...prevMessages, message]);
+            });
         }
         return () => {
             if (socket) {
@@ -33,14 +33,21 @@ export default function ChatMessage() {
     }
     return (
         <div>
-            <ul>
-                {messages?.map((item, key) => {
-                    return <li key={key}>
-                        {item.msg}
-                    </li>
-                })}
-            </ul>
-
+            {!messages && <CircleLoader />}
+            {messages &&
+                <ul>
+                    {messages.map((item, key) => {
+                        return <li key={key} className={`flex justify-between ${item?.user?.id === user.id ? 'me' : 'you'}`}>
+                            <div className="name">
+                                {item?.user?.name}
+                            </div>
+                            <div className="message">
+                                {item.content}
+                            </div>
+                        </li>
+                    })}
+                </ul>
+            }
             <form onSubmit={submit}>
                 <div>
                     <input name="message" id="message"

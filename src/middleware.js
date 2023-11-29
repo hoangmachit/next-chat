@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 export function middleware(request) {
     const cookies = request.cookies;
     if (request.nextUrl.pathname.startsWith('/channel')) {
-        const user = cookies.get('username')?.value;
+        const user = cookies.get('user')?.value;
         if (!user) {
             return NextResponse.redirect(new URL('/',request.url));
         }
